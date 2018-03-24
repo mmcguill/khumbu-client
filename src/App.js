@@ -12,45 +12,49 @@ import $ from 'jquery';
 
 const requestData = (pageSize, page, sorted, filtered) => {
     return new Promise((resolve, reject) => {
-        $.getJSON('http://localhost:3000/peaks?limit=1')
-            .then((results) => {
-                console.log(results);
+        let params = '';
 
-                let filteredData = results;
+        filtered.forEach(function (filter) {
+            params += '&' + filter.id + '=ilike.%' + filter.value + '%';
+            //params += '&' + filter.id + '=eq.' + filter.value + '';
+        });
 
-                // You can use the filters in your request, but you are responsible for applying them.
-                if (filtered.length) {
-                    filteredData = filtered.reduce((filteredSoFar, nextFilter) => {
-                        return filteredSoFar.filter(row => {
-                            return (row[nextFilter.id] + "").includes(nextFilter.value);
-                        });
-                    }, filteredData);
-                }
-                // You can also use the sorting in your request, but again, you are responsible for applying it.
-                const sortedData = _.orderBy(
-                    filteredData,
-                    sorted.map(sort => {
-                        return row => {
-                            if (row[sort.id] === null || row[sort.id] === undefined) {
-                                return -Infinity;
-                            }
-                            return typeof row[sort.id] === "string"
-                                ? row[sort.id].toLowerCase()
-                                : row[sort.id];
-                        };
-                    }),
-                    sorted.map(d => (d.desc ? "desc" : "asc"))
-                );
+        params += '&order=';
+        sorted.forEach(function(sortal) {
+            params += '' + sortal.id + (sortal.desc ? '.desc' : '.asc') + ',';
+        });
 
-                // You must return an object containing the rows of the current page, and optionally the total pages number.
-                const res = {
-                    rows: sortedData.slice(pageSize * page, pageSize * page + pageSize),
-                    pages: Math.ceil(filteredData.length / pageSize)
-                };
+        // Trim that last comma if we added it.
+        if(sorted.length) {
+            params = params.slice(0, -1);
+        }
 
-                resolve(res);
-            });
+        $.ajax({
+            url: 'http://localhost:3000/peaks?offset=' + (pageSize * page) + '&limit=' + pageSize + params,
+            type: 'GET',
+            dataType: 'json',
+            success: function (data, status, request) {
+                let rowCount = request.getResponseHeader('Content-Range').split('/').pop();
+                handleResponse(data, resolve, sorted, page, pageSize, rowCount);
+            },
+            error: function (err) {
+                console.log(err);
+                alert('boo!' + err); // TODO
+            },
+            beforeSend: function setHeader(xhr) {
+                xhr.setRequestHeader('Prefer', 'count=exact');
+            }
+        });
     });
+};
+
+const handleResponse = (results, resolve, sorted, page, pageSize, rowCount) => {
+    const res = {
+        rows: results,
+        pages: Math.ceil(rowCount / pageSize)
+    };
+
+    resolve(res);
 };
 
 class App extends Component {
@@ -78,7 +82,7 @@ class App extends Component {
             state.filtered
         ).then(res => {
             // Now just get the rows of data to your React Table (and update anything else like total pages or loading)
-            if(res.rows) {
+            if(res.rows.length) {
                 this.setState({
                     data: res.rows,
                     pages: res.pages,
@@ -128,7 +132,23 @@ class App extends Component {
                         onFetchData={this.fetchData} // Request new data when things change
                         filterable
                         defaultPageSize={10}
+                        defaultSorted={[
+                            {
+                                id: "pkname",
+                                desc: false
+                            }
+                        ]}
                         className="-striped -highlight"
+                        SubComponent={(row) => {
+                                return (
+                                    <div>
+                                        You can put any component you want here, even another React Table! You even have
+                                        access to the row-level data if you need! Spark-charts, drill-throughs,
+                                        infographics... the possibilities are endless!
+                                    </div>
+                                )
+                            }
+                        }
                     />
                 </div>
             </div>

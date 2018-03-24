@@ -1,23 +1,14 @@
 import React, {Component} from 'react';
 import logo from './logo.svg';
 import './App.css';
-import SwaggerUI from "swagger-ui";
 import 'swagger-ui/dist/swagger-ui.css';
 import Form from "react-jsonschema-form";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import _ from "lodash";
-import $ from 'jquery'
+import $ from 'jquery';
 
-const data = [{
-    name: 'Tanner Linsley',
-    age: 26,
-    friend: {
-        name: 'Jason Maurer',
-        age: 23,
-    }
-}];
 
 const requestData = (pageSize, page, sorted, filtered) => {
     return new Promise((resolve, reject) => {
@@ -62,16 +53,7 @@ const requestData = (pageSize, page, sorted, filtered) => {
     });
 };
 
-const log = (type) => console.log.bind(console, type);
-
 class App extends Component {
-    componentDidMount() {
-        // SwaggerUI({
-        //     dom_id: "#swagger-ui",
-        //     url: "http://localhost:3000"
-        // })
-    }
-
     constructor() {
         super();
         this.state = {
@@ -149,14 +131,6 @@ class App extends Component {
                         className="-striped -highlight"
                     />
                 </div>
-
-                {/*<div>*/}
-                {/*<Form schema={schema}*/}
-                {/*onChange={log("changed")}*/}
-                {/*onSubmit={log("submitted")}*/}
-                {/*onError={log("errors")} />*/}
-                {/*</div>*/}
-                <div id="swagger-ui"/>
             </div>
         );
     }

@@ -24,7 +24,7 @@ const custom_columns = [ {
     }
 ];
 
-class PeaksList extends BaseTable {
+class Peaks extends BaseTable {
     constructor() {
         super('peaks');
 
@@ -32,7 +32,7 @@ class PeaksList extends BaseTable {
     }
 
     render() {
-        const {data, pages, loading, columns} = this.state;
+        const {data, pages, loading} = this.state;
 
         return (<div>
                     <h2>Peaks</h2>
@@ -58,4 +58,4 @@ class PeaksList extends BaseTable {
 }
 
 
-export default PeaksList;
+export default Peaks;

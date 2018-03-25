@@ -14,6 +14,7 @@ class References extends BaseTable {
 
         return (
             <div>
+                <h2>References</h2>
                 <ReactTable
                     columns={columns}
                     manual // Forces table not to paginate or sort automatically, so we can handle it server-side
@@ -30,16 +31,6 @@ class References extends BaseTable {
                     //     }
                     // ]}
                     className="-striped -highlight"
-                    SubComponent={(row) => {
-                        return (
-                            <div>
-                                You can put any component you want here, even another React Table! You even have
-                                access to the row-level data if you need! Spark-charts, drill-throughs,
-                                infographics... the possibilities are endless!
-                            </div>
-                        )
-                    }
-                    }
                 />
             </div>);
     }

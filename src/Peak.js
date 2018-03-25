@@ -7,7 +7,7 @@ class Peak extends Component {
         super(props);
 
         this.state = {
-            data: { peakid: 'Loading...' }
+            data: { pkname: 'Loading...' }
         };
     }
 

@@ -2,6 +2,31 @@ import React from 'react';
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import BaseTable from "./BaseTable";
+import {Link} from 'react-router-dom';
+
+const custom_columns = [ {
+    Header: 'ID',
+    accessor: 'expid',
+    Cell: foo => <Link to={`/expeditions/${foo.original.expid}`}>{foo.value}</Link>
+},
+    {
+        Header: 'Peak ID',
+        accessor: 'peakid',
+        Cell: foo => <Link to={`/peaks/${foo.original.peakid}`}>{foo.value}</Link>
+    },
+    {
+        Header: 'Primary Route',
+        accessor: 'route1'
+    },
+    {
+        Header: 'Nation',
+        accessor: 'nation'
+    },
+    {
+        Header: 'Highpoint (m)',
+        accessor: 'highpoint'
+    },
+];
 
 class Expeditions extends BaseTable {
     constructor() {
@@ -10,11 +35,12 @@ class Expeditions extends BaseTable {
     }
 
     render() {
-        const {data, pages, loading, columns} = this.state;
+        const {data, pages, loading} = this.state;
 
         return (<div>
+                    <h2>Expeditions</h2>
                     <ReactTable
-                        columns={columns}
+                        columns={custom_columns}
                         manual // Forces table not to paginate or sort automatically, so we can handle it server-side
                         data={data}
                         pages={pages} // Display the total number of pages
@@ -29,16 +55,6 @@ class Expeditions extends BaseTable {
                             }
                         ]}
                         className="-striped -highlight"
-                        SubComponent={(row) => {
-                            return (
-                                <div>
-                                    You can put any component you want here, even another React Table! You even have
-                                    access to the row-level data if you need! Spark-charts, drill-throughs,
-                                    infographics... the possibilities are endless!
-                                </div>
-                            )
-                        }
-                        }
                     />
                 </div>);
     }

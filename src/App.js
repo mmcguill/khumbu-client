@@ -1,15 +1,36 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
+import logo from './mountain-logo.png';
 import './App.css';
 import 'swagger-ui/dist/swagger-ui.css';
-import Form from "react-jsonschema-form";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import _ from "lodash";
-import $ from 'jquery';
-import Peaks from "./Peaks";
-import Expeditions from "./Expeditions";
-import Members from "./Members";
-import References from "./References";
+import ExpeditionsList from "./Expeditions";
+import MembersList from "./Members";
+import ReferencesList from "./References";
+import {Link} from 'react-router-dom';
+import {Route} from 'react-router-dom';
+import PeaksList from "./PeaksList";
+import Peak from "./Peak";
+
+const Expeditions = () => (
+    <div>
+        <h2>Expeditions</h2>
+        <ExpeditionsList/>
+    </div>
+);
+
+const Members = () => (
+    <div>
+        <h2>Members</h2>
+        <MembersList/>
+    </div>
+);
+
+const References = () => (
+    <div>
+        <h2>References</h2>
+        <ReferencesList/>
+    </div>
+);
 
 class App extends Component {
     render() {
@@ -17,30 +38,27 @@ class App extends Component {
             <div className="App">
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo"/>
-                    <h1 className="App-title">Welcome to React</h1>
+                    <h1 className="App-title">Elizabeth Hawley's Himalayan Database</h1>
                 </header>
                 <p className="App-intro">
-                    To get started, edit <code>src/App.js</code> and to reload.
+                    BETA
                 </p>
 
                 <div>
-                    <h1>Peaks</h1>
-                    <Peaks/>
+                    <nav>
+                        <Link to="/peaks">Peaks</Link>
+                        | <Link to="/expeditions">Expeditions</Link>
+                        | <Link to="/members">Members</Link>
+                        | <Link to="/references">References</Link>
+                    </nav>
                 </div>
 
-                <div>
-                    <h1>Expeditions</h1>
-                    <Expeditions/>
-                </div>
-
-                <div>
-                    <h1>Members</h1>
-                    <Members/>
-                </div>
-
-                <div>
-                    <h1>References</h1>
-                    <References/>
+                <div className="App-main-container">
+                    <Route exact path="/peaks" component={PeaksList}/>
+                    <Route path="/peaks/:peakid" component={Peak} />
+                    <Route path="/expeditions" component={Expeditions}/>
+                    <Route path="/members" component={Members}/>
+                    <Route path="/references" component={References}/>
                 </div>
             </div>
         );

@@ -2,21 +2,42 @@ import React from 'react';
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import BaseTable from "./BaseTable";
+import {Link} from 'react-router-dom';
 
-class Peaks extends BaseTable {
+const custom_columns = [ {
+        Header: 'ID',
+        accessor: 'peakid',
+        Cell: foo => <Link to={`/peaks/${foo.original.peakid}`}>{foo.value}</Link>
+    },
+    {
+        Header: 'Name',
+        accessor: 'pkname',
+        Cell: foo => <Link to={`/peaks/${foo.original.peakid}`}>{foo.value}</Link>
+    },
+    {
+        Header: 'Height (m)',
+        accessor: 'heightm'
+    },
+    {
+        Header: 'Height (f)',
+        accessor: 'heightf'
+    }
+];
+
+class PeaksList extends BaseTable {
     constructor() {
         super('peaks');
 
         this.fetchData = this.fetchData.bind(this);
     }
 
-
     render() {
         const {data, pages, loading, columns} = this.state;
 
         return (<div>
+                    <h2>Peaks</h2>
                     <ReactTable
-                        columns={columns}
+                        columns={custom_columns}
                         manual // Forces table not to paginate or sort automatically, so we can handle it server-side
                         data={data}
                         pages={pages} // Display the total number of pages
@@ -26,24 +47,15 @@ class Peaks extends BaseTable {
                         defaultPageSize={10}
                         defaultSorted={[
                             {
-                                id: "pkname",
-                                desc: false
+                                id: "heightm",
+                                desc: true
                             }
                         ]}
                         className="-striped -highlight"
-                        SubComponent={(row) => {
-                            return (
-                                <div>
-                                    You can put any component you want here, even another React Table! You even have
-                                    access to the row-level data if you need! Spark-charts, drill-throughs,
-                                    infographics... the possibilities are endless!
-                                </div>
-                            )
-                        }
-                        }
                     />
                 </div>);
     }
 }
 
-export default Peaks;
+
+export default PeaksList;

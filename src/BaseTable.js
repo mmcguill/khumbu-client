@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import {Component} from 'react';
 import $ from "jquery";
 
 class BaseTable extends Component {
@@ -35,7 +35,7 @@ class BaseTable extends Component {
             }
 
             $.ajax({
-                url: 'http://localhost:3000/' + this.entity + '?offset=' + (pageSize * page) + '&limit=' + pageSize + params,
+                url: process.env.REACT_APP_SERVER + '/' + this.entity + '?offset=' + (pageSize * page) + '&limit=' + pageSize + params,
                 type: 'GET',
                 dataType: 'json',
                 success: function (data, status, request) {

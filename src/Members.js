@@ -39,8 +39,8 @@ const custom_columns = [ {
 ];
 
 class Members extends BaseTable {
-    constructor() {
-        super('members');
+    constructor(props) {
+        super(props, 'members');
         this.fetchData = this.fetchData.bind(this);
     }
 

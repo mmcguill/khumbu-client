@@ -3,8 +3,9 @@ import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import BaseTable from "./BaseTable";
 import {Link} from 'react-router-dom';
+import qs from 'query-string'
 
-const custom_columns = [ {
+const custom_columns = [{
     Header: 'ID',
     accessor: 'expid',
     Cell: foo => <Link to={`/expeditions/${foo.original.expid}`}>{foo.value}</Link>
@@ -29,8 +30,19 @@ const custom_columns = [ {
 ];
 
 class Expeditions extends BaseTable {
-    constructor() {
-        super('exped');
+    constructor(props) {
+        super(props, 'exped');
+
+        let queryString = this.props.location.search;
+        let queryParams = qs.parse(queryString);
+
+        if (queryParams['peakid']) {
+            this.state = {filtered: [{id: "peakid", value: queryParams['peakid']}]};
+        }
+        else {
+            this.state = {filtered: []};
+        }
+
         this.fetchData = this.fetchData.bind(this);
     }
 
@@ -38,25 +50,27 @@ class Expeditions extends BaseTable {
         const {data, pages, loading} = this.state;
 
         return (<div>
-                    <h2>Expeditions</h2>
-                    <ReactTable
-                        columns={custom_columns}
-                        manual // Forces table not to paginate or sort automatically, so we can handle it server-side
-                        data={data}
-                        pages={pages} // Display the total number of pages
-                        loading={loading} // Display the loading overlay when we need it
-                        onFetchData={ this.fetchData } // Request new data when things change
-                        filterable
-                        defaultPageSize={10}
-                        defaultSorted={[
-                            {
-                                id: "expid",
-                                desc: false
-                            }
-                        ]}
-                        className="-striped -highlight"
-                    />
-                </div>);
+            <h2>Expeditions</h2>
+            <ReactTable
+                columns={custom_columns}
+                manual // Forces table not to paginate or sort automatically, so we can handle it server-side
+                data={data}
+                pages={pages} // Display the total number of pages
+                loading={loading} // Display the loading overlay when we need it
+                onFetchData={ this.fetchData } // Request new data when things change
+                filterable
+                defaultPageSize={10}
+                defaultSorted={[
+                    {
+                        id: "highpoint",
+                        desc: true
+                    }
+                ]}
+                filtered={ this.state.filtered }
+                onFilteredChange={filtered => this.setState({filtered})}
+                className="-striped -highlight"
+            />
+        </div>);
     }
 }
 

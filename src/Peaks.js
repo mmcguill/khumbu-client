@@ -25,8 +25,8 @@ const custom_columns = [ {
 ];
 
 class Peaks extends BaseTable {
-    constructor() {
-        super('peaks');
+    constructor(props) {
+        super(props, 'peaks');
 
         this.fetchData = this.fetchData.bind(this);
     }

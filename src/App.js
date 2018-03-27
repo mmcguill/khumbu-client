@@ -35,6 +35,7 @@ class App extends Component {
                 </p>
 
                 <div className="App-main-container">
+                    <Route exact path="/" component={Peaks}/>
                     <Route exact path="/peaks" component={Peaks}/>
                     <Route path="/peaks/:peakid" component={Peak} />
                     <Route exact path="/expeditions" component={Expeditions}/>

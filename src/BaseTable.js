@@ -4,8 +4,8 @@ import $ from "jquery";
 class BaseTable extends Component {
     entity = 'peaks';
 
-    constructor(entity) {
-        super();
+    constructor(props, entity) {
+        super(props);
         this.entity = entity;
         this.state = {
             data: [],
@@ -46,7 +46,7 @@ class BaseTable extends Component {
                     });
                 },
                 error: function (err) {
-                    console.log(err);
+                    console.log( err);
                     //alert('boo!' + err); // TODO
                 },
                 beforeSend: function setHeader(xhr) {

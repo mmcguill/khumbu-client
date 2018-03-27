@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './Expedition.css'
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-import qs from 'query-string'
+import qs from 'qs'
 
 class Expedition extends Component {
     constructor(props) {

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './Peak.css'
 import axios from 'axios';
 import {Link} from 'react-router-dom';
-import qs from 'query-string'
+import qs from 'qs'
 
 class Peak extends Component {
     constructor(props) {

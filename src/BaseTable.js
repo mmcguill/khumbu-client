@@ -1,6 +1,6 @@
 import {Component} from 'react';
 import $ from "jquery";
-import qs from 'query-string'
+import qs from 'qs'
 
 class BaseTable extends Component {
     entity = 'peaks';
@@ -19,7 +19,6 @@ class BaseTable extends Component {
     requestData = (pageSize, page, sorted, filtered) => {
         return new Promise((resolve, reject) => {
             let filterParams = {};
-            let filterParamsString = '';
 
             filtered.forEach(function (filter) {
                 filterParams[filter.id] = 'ilike.%' + filter.value + '%'; // TODO: Doesn't work for numeric fields like heightm
@@ -28,7 +27,7 @@ class BaseTable extends Component {
                 //params += '&' + filter.id + '=eq.' + filter.value + '';
             });
 
-            filterParamsString = qs.stringify(filterParams);
+            let filterParamsString = qs.stringify(filterParams);
             if(filterParamsString.length) {
                 filterParamsString = '&' + filterParamsString;
             }
@@ -84,7 +83,7 @@ class BaseTable extends Component {
                     data: res.rows,
                     pages: res.pages,
                     loading: false,
-                    columns: this.getColumns(res.rows[0])
+                    columns: BaseTable.getColumns(res.rows[0])
                 });
             }
             else {
@@ -97,7 +96,7 @@ class BaseTable extends Component {
         });
     }
 
-    getColumns(foo) {
+    static getColumns(foo) {
         return Object.keys(foo).map(key => {
             return {
                 Header: key,

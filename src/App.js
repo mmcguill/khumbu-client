@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import logo from './mountain-logo.png';
 import './App.css';
-import 'swagger-ui/dist/swagger-ui.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Expeditions from "./Expeditions";
 import Members from "./Members";

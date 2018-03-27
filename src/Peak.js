@@ -23,8 +23,9 @@ class Peak extends Component {
     render() {
         return (<div>
             <h2>{ this.state.data.pkname }</h2>
-            <Link to={{ pathname: '/expeditions', search: qs.stringify({ peakid: this.state.data.peakid }) }}>Click here to see all Expeditions to {this.state.data.pkname}</Link>
-            <table className="Peak-detail-table" border="1px solid">
+            <h5><Link to={{ pathname: '/expeditions', search: qs.stringify({ peakid: this.state.data.peakid }) }}>Click here to see all Expeditions to {this.state.data.pkname}</Link>
+            </h5>
+                <table className="Peak-detail-table" border="1px solid">
                 <tbody>
                 {Object.keys(this.state.data).map((object, i) => <tr>
                     <td>{object}</td>
@@ -32,6 +33,8 @@ class Peak extends Component {
                 </tr>)}
                 </tbody>
             </table>
+            <h5><Link to={{ pathname: '/expeditions', search: qs.stringify({ peakid: this.state.data.peakid }) }}>Click here to see all Expeditions to {this.state.data.pkname}</Link>
+            </h5>
         </div>);
     }
 }

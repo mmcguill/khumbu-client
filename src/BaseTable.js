@@ -1,5 +1,6 @@
 import {Component} from 'react';
 import $ from "jquery";
+import qs from 'query-string'
 
 class BaseTable extends Component {
     entity = 'peaks';
@@ -17,14 +18,23 @@ class BaseTable extends Component {
 
     requestData = (pageSize, page, sorted, filtered) => {
         return new Promise((resolve, reject) => {
-            let params = '';
+            let filterParams = {};
+            let filterParamsString = '';
 
             filtered.forEach(function (filter) {
-                params += '&' + filter.id + '=ilike.%' + filter.value + '%';
+                filterParams[filter.id] = 'ilike.%' + filter.value + '%'; // TODO: Doesn't work for numeric fields like heightm
+
+                //params += '&' + filter.id + '=ilike.%' + filter.value + '%';
                 //params += '&' + filter.id + '=eq.' + filter.value + '';
             });
 
-            params += '&order=';
+            filterParamsString = qs.stringify(filterParams);
+            if(filterParamsString.length) {
+                filterParamsString = '&' + filterParamsString;
+            }
+
+
+            let params =  filterParamsString + '&order=';
             sorted.forEach(function(sortal) {
                 params += '' + sortal.id + (sortal.desc ? '.desc' : '.asc') + ',';
             });

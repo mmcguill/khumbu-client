@@ -4,7 +4,6 @@ import 'react-table/react-table.css'
 import BaseTable from "./BaseTable";
 import {Link} from 'react-router-dom';
 import qs from 'query-string'
-
 const custom_columns = [{
     Header: 'ID',
     accessor: 'expid',
@@ -26,6 +25,10 @@ const custom_columns = [{
     {
         Header: 'Highpoint (m)',
         accessor: 'highpoint'
+    },
+    {
+        Header: 'Year',
+        accessor: 'year'
     },
 ];
 
@@ -64,6 +67,10 @@ class Expeditions extends BaseTable {
                     {
                         id: "highpoint",
                         desc: true
+                    },
+                    {
+                        id: "year",
+                        desc: false
                     }
                 ]}
                 filtered={ this.state.filtered }

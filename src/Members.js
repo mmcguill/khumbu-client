@@ -3,6 +3,7 @@ import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import BaseTable from "./BaseTable";
 import {Link} from 'react-router-dom';
+import qs from 'query-string'
 
 const custom_columns = [ {
     Header: 'ID',
@@ -41,6 +42,17 @@ const custom_columns = [ {
 class Members extends BaseTable {
     constructor(props) {
         super(props, 'members');
+
+        let queryString = this.props.location.search;
+        let queryParams = qs.parse(queryString);
+
+        if (queryParams['expid']) {
+            this.state = {filtered: [{id: "expid", value: queryParams['expid']}]};
+        }
+        else {
+            this.state = {filtered: []};
+        }
+
         this.fetchData = this.fetchData.bind(this);
     }
 
@@ -62,8 +74,18 @@ class Members extends BaseTable {
                             {
                                 id: "expid",
                                 desc: false
+                            },
+                            {
+                                id: "lname",
+                                desc: false
+                            },
+                            {
+                                id: "fname",
+                                desc: false
                             }
                         ]}
+                        filtered={ this.state.filtered }
+                        onFilteredChange={filtered => this.setState({filtered})}
                         className="-striped -highlight"
                     />
                 </div>);
